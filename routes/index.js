@@ -1,3 +1,3 @@
 module.exports = {
-    productoRoutes : require('./producto.routes')
+    productoRoutes: require('./producto.routes')
 }
