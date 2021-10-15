@@ -4,6 +4,8 @@ const { productoController } = require('../controllers');
 
 router.get('/', productoController.obtenerProducto);
 
+router.get('/todos', productoController.obtenerProductos);
+
 router.post('/', productoController.crearProducto);
 
 router.put('/', productoController.actualizarProducto);

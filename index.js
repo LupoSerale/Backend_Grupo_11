@@ -1,6 +1,10 @@
 const express = require('express');
 const app = express();
 const routes = require('./routes');
+const mongoose = require('mongoose');
+const dbConexion = require('./config/conexion');
+
+app.use(express.json());
 
 const port = 3001;
 
