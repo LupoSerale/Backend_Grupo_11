@@ -1,77 +1,125 @@
+//Importando el modelo de Base de datos de los productos
 const ProductoSchema = require('../models/producto');
+//importando la libreria que nos permite capturar los errores en el cuerpo de la solicitudes
+const { validationResult } = require('express-validator');
 
 const obtenerProductos = async (req, res) => {
     try {
         let productos = await ProductoSchema.find();
-        res.json({ productos });
+        res.status(200).json({ data: productos });
     }
     catch (err) {
-        console.log(err);
+        res.status(404).json({
+            error: {
+                code: 404,
+                message: "Problemas con la base de datos" + err.message
+            }
+        })
     }
 }
 
 const obtenerProducto = async (req, res) => {
-    if (typeof req.body != 'undefined') {
+    if (req.params.id != 'undefined') {
         try {
-            let producto = await ProductoSchema.findById(req.body.id);
-            res.json({ producto });
+            let producto = await ProductoSchema.findById(req.params.id);
+            res.status(200).json({ data: producto });
         }
         catch (err) {
-            console.log(err);
+            res.status(404).json({
+                error: {
+                    code: 404,
+                    message: "Producto no encontrado"
+                }
+            })
         }
     } else {
-        res.json({ msg: 'No se puede obtener el producto sin el id' });
+        res.status(404).json({
+            error: {
+                code: 404,
+                message: "Id no encontrado"
+            }
+        })
     }
 }
 
 const crearProducto = async (req, res) => {
-    if (typeof req.body != 'undefined') {
-        console.log(console.log(req.body))
+    //verificando que si hay errores en los parametros de la solictud
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        //si existen errores damos una respuesta erronea
+        return res.status(400).json({
+            error: {
+                code: 404,
+                errors: errors.array()
+            }
+        });
+    }
         let producto = new ProductoSchema(req.body);
         try {
             await producto.save();
-            res.json({ msg: 'Se ha ingresado el producto ' + producto.id });
+            res.status(201).json({ data: producto });
         }
         catch (err) {
-            console.log(err);
+            res.status(404).json({
+                error: {
+                    code: 404,
+                    message: "Problemas con la base de datos" + err.message
+                }
+            })
         }
-    } else {
-        res.json({ msg: 'Revise su configuración' });
     }
-
-}
 
 const actualizarProducto = async(req, res) => {
-    if (typeof req.body != 'undefined') {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({
+            error: {
+                code: 404,
+                errors: errors.array()
+            }
+        });
+    }
         try {
-            await ProductoSchema.findByIdAndUpdate(
-                req.body._id, 
-                {
-                    description: req.body.description,
-                    valor: req.body.valor,
-                    estado: req.body.estado
-                });
-            res.json({ msg: 'Se actualizó el producto ' + req.body._id });
+            let nuevoProducto = {
+                id: req.params.id,
+                valor: req.body.valor,
+                descripcion: req.body.descripcion,
+                estado: req.body.estado
+            }
+            await ProductoSchema.findByIdAndUpdate(req.params.id, nuevoProducto);
+            res.status(201).json({ data: nuevoProducto })
         }
         catch (err) {
-            console.log(err);
+            res.status(404).json({
+                error: {
+                    code: 404,
+                    message: "Id no encontrado"
+                }
+            })
         }
-    } else {
-        res.json({ msg: 'No se puede actualizar el producto' });
     }
-}
 
 const eliminarProducto = async (req, res) => {
-    if (typeof req.body != 'undefined') {
+    if (req.params.id != 'undefined') {
         try {
-            await ProductoSchema.findByIdAndDelete(req.body.id);
-            res.json({ msg: 'Se ha eliminado el producto ' + req.body.id});
+            let resultado = await ProductoSchema.findByIdAndRemove(req.params.id);
+            res.status(200).json({ data: resultado });
         }
         catch (err) {
-            console.log(err);
+            res.status(404).json({
+                error: {
+                    code: 404,
+                    message: "Producto no encontrado"
+                }
+            })
         }
     } else {
-        res.json({ msg: 'No se pudo eliminar el producto ' + req.body.id });
+        res.status(404).json({
+            error: {
+                code: 404,
+                message: "Id no encontrado"
+            }
+        })
     }
 }
 

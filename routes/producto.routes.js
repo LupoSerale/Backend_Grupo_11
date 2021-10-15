@@ -1,15 +1,25 @@
 const { Router } = require('express');
 const router = Router();
+const { body } = require('express-validator');
 const { productoController } = require('../controllers');
 
-router.get('/', productoController.obtenerProducto);
+router.get('/:id', productoController.obtenerProducto);
 
-router.get('/todos', productoController.obtenerProductos);
+router.get('/', productoController.obtenerProductos);
 
-router.post('/', productoController.crearProducto);
+router.post('/',
 
-router.put('/', productoController.actualizarProducto);
+body('valor', 'El valor del producto es requerido y debe ser numerico').exists().isNumeric(),
+body('descripcion', 'La descripción del producto es requerida').exists(),
+body('estado', 'El estado del producto es requerido(true/false)').isBoolean().exists(), 
+productoController.crearProducto);
 
-router.delete('/', productoController.eliminarProducto);
+router.put('/:id',
+body('valor', 'El valor del producto es requerido y debe ser numerico').exists().isNumeric(),
+body('descripcion', 'La descripción del producto es requerida').exists(),
+body('estado', 'El estado del producto es requerido(true/false)').isBoolean().exists(), 
+productoController.actualizarProducto);
+
+router.delete('/:id', productoController.eliminarProducto);
 
 module.exports = router;
