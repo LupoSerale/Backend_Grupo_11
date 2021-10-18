@@ -5,7 +5,7 @@ const { validationResult } = require('express-validator');
 
 const obtenerProductos = async (req, res) => {
     try {
-        let productos = await ProductoSchema.find();
+        let productos = await ProductoSchema.find().sort({descripcion: 1});
         res.status(200).json({ data: productos });
     }
     catch (err) {
@@ -54,22 +54,22 @@ const crearProducto = async (req, res) => {
             }
         });
     }
-        let producto = new ProductoSchema(req.body);
-        try {
-            await producto.save();
-            res.status(201).json({ data: producto });
-        }
-        catch (err) {
-            res.status(404).json({
-                error: {
-                    code: 404,
-                    message: "Problemas con la base de datos" + err.message
-                }
-            })
-        }
+    let producto = new ProductoSchema(req.body);
+    try {
+        await producto.save();
+        res.status(201).json({ data: producto });
     }
+    catch (err) {
+        res.status(404).json({
+            error: {
+                code: 404,
+                message: "Problemas con la base de datos" + err.message
+            }
+        })
+    }
+}
 
-const actualizarProducto = async(req, res) => {
+const actualizarProducto = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({
@@ -79,25 +79,25 @@ const actualizarProducto = async(req, res) => {
             }
         });
     }
-        try {
-            let nuevoProducto = {
-                id: req.params.id,
-                valor: req.body.valor,
-                descripcion: req.body.descripcion,
-                estado: req.body.estado
-            }
-            await ProductoSchema.findByIdAndUpdate(req.params.id, nuevoProducto);
-            res.status(201).json({ data: nuevoProducto })
+    try {
+        let nuevoProducto = {
+            id: req.params.id,
+            valor: req.body.valor,
+            descripcion: req.body.descripcion,
+            estado: req.body.estado
         }
-        catch (err) {
-            res.status(404).json({
-                error: {
-                    code: 404,
-                    message: "Id no encontrado"
-                }
-            })
-        }
+        await ProductoSchema.findByIdAndUpdate(req.params.id, nuevoProducto);
+        res.status(201).json({ data: nuevoProducto })
     }
+    catch (err) {
+        res.status(404).json({
+            error: {
+                code: 404,
+                message: "Id no encontrado"
+            }
+        })
+    }
+}
 
 const eliminarProducto = async (req, res) => {
     if (req.params.id != 'undefined') {
