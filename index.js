@@ -3,8 +3,10 @@ const app = express();
 const routes = require('./routes');
 const mongoose = require('mongoose');
 const dbConexion = require('./config/conexion');
+var cors = require('cors')
 
 app.use(express.json());
+app.use(cors());
 
 const port = 3001;
 

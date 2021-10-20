@@ -18,8 +18,9 @@
   },
   "homepage": "https://github.com/LupoSerale/Backend_Grupo_11#readme",
   "dependencies": {
-    "express-validator": "^6.12.2",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
+    "express-validator": "^6.12.2",
     "mongoose": "^6.0.11"
   }
 }
