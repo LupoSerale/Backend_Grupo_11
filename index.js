@@ -15,6 +15,8 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api/producto', routes.productoRoutes);
+app.use('/usuarios', routes.usersRouter);
+
 
 app.listen(port, () => {
     console.log(`listening on port http://localhost:${port}`);
