@@ -2,7 +2,10 @@ const {Router} = require ('express');
 const router = Router(); 
 const {ventaController}= require("../controllers");
 const { body } = require('express-validator');
+
 router.get('/',ventaController.getVentas);
+
+router.get('/:id', ventaController.getVenta);
 
 router.post('/', 
 body('fecha', 'La fecha es requerida').exists(),
