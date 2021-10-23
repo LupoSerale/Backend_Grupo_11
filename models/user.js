@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const UserSchema = Schema({
-    fullName:{
+    fullName: {
         type: 'string',
         require: true,
         min: 6,
@@ -12,13 +12,14 @@ const UserSchema = Schema({
         type: 'string',
         require: true,
         min: 6,
-        max: 40
+        max: 100,
+        unique: true
     },
     password: {
         type: 'string',
         require: true,
         min: 8,
-        max: 16
+        max: 255
     },
     date: {
         type: Date,
@@ -26,4 +27,4 @@ const UserSchema = Schema({
     }
 })
 
-module.exports = mongoose.model('users',UserSchema);
+module.exports = mongoose.model('users', UserSchema);

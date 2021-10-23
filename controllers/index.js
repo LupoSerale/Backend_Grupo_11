@@ -1,5 +1,5 @@
 module.exports = {
-    productoController: require('./producto.controller'),
-    usersController: require('./users.controller')
-
+    productsController: require('./products.controller'),
+    usersController: require('./users.controller'),
+    authController: require('./auth.controller')
 }
