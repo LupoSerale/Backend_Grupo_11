@@ -21,6 +21,6 @@ app.use('/api/venta', routes.ventaRoutes);
 app.use('/usuarios', routes.usersRouter);
 
 
-app.listen(port, () => {
+app.listen(process.env.PORT || port, () => {
     console.log(`listening on port http://localhost:${port}`);
 });
