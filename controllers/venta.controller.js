@@ -20,6 +20,29 @@ const getVentas = async (req,res) => {
              }       
 }
 
+const getVenta = async (req, res) => {
+    if (req.params.id != 'undefined') {
+        try {
+            let venta = await VentaSchema.findById(req.params.id);
+            res.status(200).json({ data: venta });
+        }
+        catch (err) {
+            res.status(404).json({
+                error: {
+                    code: 404,
+                    message: "Producto no encontrado"
+                }
+            })
+        }
+    } else {
+        res.status(404).json({
+            error: {
+                code: 404,
+                message: "Id no encontrado"
+            }
+        })
+    }
+}
 
 const createVenta = async (req,res) =>  {
     
@@ -113,7 +136,7 @@ const deleteVenta = async (req,res) => {
     }
 }
 
-
+module.exports.getVenta = getVenta;
 module.exports.getVentas = getVentas;
 module.exports.createVenta = createVenta;   
 module.exports.updateVenta = updateVenta;  
