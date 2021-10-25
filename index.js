@@ -18,7 +18,8 @@ app.get('/', (req, res) => {
 
 app.use('/api/producto', routes.productoRoutes);
 app.use('/api/venta', routes.ventaRoutes);
-app.use('/usuarios', routes.usersRouter);
+app.use('/api/usuario', routes.usersRoutes);
+app.use('/api/auth', routes.authRoutes);
 
 
 app.listen(process.env.PORT || port, () => {

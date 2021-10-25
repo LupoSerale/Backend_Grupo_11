@@ -12,7 +12,8 @@ const UserSchema = Schema({
         type: 'string',
         require: true,
         min: 6,
-        max: 40
+        max: 40,
+        unique: true
     },
     password: {
         type: 'string',

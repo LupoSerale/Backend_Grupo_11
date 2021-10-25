@@ -1,6 +1,6 @@
 //primero llamamos a la ruta donde estan almacenados todos los productos
 const ProductosSchema = require("../models/productos");
-//definimos la funcion que va a verificar los productos qeu hay almacenados en la bd
+//definimos la funcion que va a verificar los productos que hay almacenados en la bd
 //para esta solicitud usamos los parametros req, res y next
 const verificacionProductos = async (req, res) => {
   //creamos la funcion que va a listar los productos
