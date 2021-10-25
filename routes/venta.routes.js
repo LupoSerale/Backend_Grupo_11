@@ -2,14 +2,13 @@ const { Router } = require('express');
 const router = Router();
 const { ventaController } = require("../controllers");
 const { body } = require('express-validator');
-const verificarToken = require('../middlewares/verificarToken');
+//const verificarToken = require('../middlewares/verificarToken');
 
 router.get('/', ventaController.getVentas);
 
-router.get('/:id', verificarToken, ventaController.getVenta);
+router.get('/:id', ventaController.getVenta);
 
 router.post('/',
-    verificarToken,
     body('fecha', 'La fecha es requerida').exists(),
     body('valor', 'El valor de la venta es requerida y debe ser numerico').exists().isNumeric(),
     body('cantidadProd', 'la cantidad de Productos  es requerido y debe ser numerico').exists().isNumeric(),
@@ -20,7 +19,6 @@ router.post('/',
     ventaController.createVenta);
 
 router.put('/:id',
-    verificarToken,
     body('fecha', 'La fecha es requerida').exists(),
     body('valor', 'El valor de la venta es requerida y debe ser numerico').exists().isNumeric(),
     body('cantidadProd', 'la cantidad de Productos  es requerido y debe ser numerico').exists().isNumeric(),
@@ -30,6 +28,6 @@ router.put('/:id',
     body('documentoVendedor', 'el documento del vendedor es requerido y debe ser numerico').exists().isNumeric(),
     ventaController.updateVenta);
 
-router.delete('/:id', verificarToken, ventaController.deleteVenta);
+router.delete('/:id', ventaController.deleteVenta);
 
 module.exports = router;
